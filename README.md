@@ -24,4 +24,13 @@
 
 </p>
 
+## Установка
+Семантика версионирования - [Открыть](https://gist.github.com/DCFApixels/e53281d4628b19fe5278f3e77a7da9e8#file-dcfapixels_versioning_ru-md)
 
+* ### Unity-модуль
+Добавьте git-URL в [PackageManager](https://docs.unity3d.com/2023.2/Documentation/Manual/upm-ui-giturl.html) или вручную в `Packages/manifest.json` файл. Используйте этот git-URL: 
+```
+https://github.com/DCFApixels/Unity-Notes.git
+```
+* ### В виде исходников
+Можно установит просто скопировав исходники в папку проекта
