@@ -1,0 +1,21 @@
+{
+    "name": "com.dcfa_pixels.vector_fields",
+    "author": 
+    {
+        "name": "DCFApixels",
+        "url": "https://github.com/DCFApixels"
+    },
+    "displayName": "VectorFields",
+    "description": "",
+    "unity": "2020.3",
+    "version": "0.5.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DCFApixels/VectorFields.git"
+    },
+    "keywords":
+    [
+        "editor",
+        "utility"
+    ]
+}
