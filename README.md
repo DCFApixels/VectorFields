@@ -14,9 +14,9 @@
 # VectorFields
 
 **VectorFields** добавит в проект новые атрибуты для кастомизации отображения полей в инспекторе:
-* VectorField - Предназначен для отрисовки всех полей векторных типов в одну строчку, аналогично тому как отображются типы вроде Vector3.
+* VectorField - Предназначен для отрисовки всех полей векторных типов в одну строчку, аналогично тому как отображаются типы вроде Vector3.
 * ColorField - Отрисовывает векторный тип в виде поля с выбором цвета.
-* EulerField - Отрисовывает векторный тип как кватернион конвертированный в угламы Эйлера.
+* EulerField - Отрисовывает векторный тип как кватернион конвертированный в углами Эйлера.
 
 <p align="center">
 <img src="https://github.com/user-attachments/assets/3aacc2d0-a6ef-4da6-9953-00605fd7499b" width="600" >
@@ -30,7 +30,7 @@
 * ### Unity-модуль
 Добавьте git-URL в [PackageManager](https://docs.unity3d.com/2023.2/Documentation/Manual/upm-ui-giturl.html) или вручную в `Packages/manifest.json` файл. Используйте этот git-URL: 
 ```
-https://github.com/DCFApixels/Unity-Notes.git
+https://github.com/DCFApixels/VectorFields.git
 ```
 * ### В виде исходников
 Можно установит просто скопировав исходники в папку проекта
