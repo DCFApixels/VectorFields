@@ -11,7 +11,7 @@
 <img alt="License" src="https://img.shields.io/github/license/DCFApixels/VectorFields?color=1e90ff&style=for-the-badge">
 </p>
 
-# VectorFields
+# :pager: VectorFields 
 
 **VectorFields** добавляет в Unity новые атрибуты для кастомизации отображения полей в инспекторе:
 * `[VectorField]` - Предназначен для отрисовки всех полей векторных типов в одну строчку, аналогично тому как отображаются типы вроде Vector3.
@@ -28,7 +28,7 @@
 
 </p>
 
-## Установка
+## :inbox_tray: Установка
 Семантика версионирования - [Открыть](https://gist.github.com/DCFApixels/e53281d4628b19fe5278f3e77a7da9e8#file-dcfapixels_versioning_ru-md)
 
 * ### Unity-модуль
