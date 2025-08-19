@@ -1,12 +1,12 @@
-﻿#if UNITY_5_3_OR_NEWER && UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace DCFApixels.DataMath.Unity.Editors
+namespace DCFApixels.VectorFields.Editors
 {
     [CustomPropertyDrawer(typeof(ColorFieldAttribute))]
-    internal class ColorFieldDrawer : VectorFieldDrawerBase<ColorFieldAttribute>
+    public class ColorFieldDrawer : VectorFieldDrawerBase<ColorFieldAttribute>
     {
         protected override bool IsHideDefaultDraw
         {
@@ -48,7 +48,7 @@ namespace DCFApixels.DataMath.Unity.Editors
 
             bool isShowAlpha = true;
             bool IsHDR = false;
-            if(_colorUsageAttribute != null)
+            if (_colorUsageAttribute != null)
             {
                 isShowAlpha = _colorUsageAttribute.showAlpha;
                 IsHDR = _colorUsageAttribute.hdr;

@@ -1,15 +1,7 @@
 using System;
-#if UNITY_5_3_OR_NEWER
 using UnityEngine;
-#else
-using DCFApixels.DataMath.Internal;
-namespace DCFApixels.DataMath.Internal
-{
-    public abstract class PropertyAttribute : Attribute { }
-}
-#endif
 
-namespace DCFApixels.DataMath
+namespace DCFApixels.VectorFields
 {
     [AttributeUsage(AttributeTargets.Field)]
     public sealed class VectorFieldAttribute : PropertyAttribute

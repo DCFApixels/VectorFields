@@ -1,11 +1,11 @@
-﻿#if UNITY_5_3_OR_NEWER && UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
-namespace DCFApixels.DataMath.Unity.Editors
+namespace DCFApixels.VectorFields.Editors
 {
     [CustomPropertyDrawer(typeof(Color32FieldAttribute))]
-    internal class Color32FieldDrawer : VectorFieldDrawerBase<Color32FieldAttribute>
+    public class Color32FieldDrawer : VectorFieldDrawerBase<Color32FieldAttribute>
     {
         protected override bool IsHideDefaultDraw
         {

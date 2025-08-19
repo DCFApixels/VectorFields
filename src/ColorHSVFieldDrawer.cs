@@ -1,12 +1,12 @@
-﻿#if UNITY_5_3_OR_NEWER && UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace DCFApixels.DataMath.Unity.Editors
+namespace DCFApixels.VectorFields.Editors
 {
     [CustomPropertyDrawer(typeof(ColorHSVFieldAttribute))]
-    internal unsafe class ColorHSVFieldDrawer : VectorFieldDrawerBase<ColorHSVFieldAttribute>
+    public unsafe class ColorHSVFieldDrawer : VectorFieldDrawerBase<ColorHSVFieldAttribute>
     {
         protected override bool IsHideDefaultDraw
         {

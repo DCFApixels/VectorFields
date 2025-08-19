@@ -1,11 +1,11 @@
-﻿#if UNITY_5_3_OR_NEWER && UNITY_EDITOR
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
-namespace DCFApixels.DataMath.Unity.Editors
+namespace DCFApixels.VectorFields.Editors
 {
     [CustomPropertyDrawer(typeof(EulerFieldAttribute))]
-    internal class EulerFieldDrawer : VectorFieldDrawerBase<EulerFieldAttribute>
+    public class EulerFieldDrawer : VectorFieldDrawerBase<EulerFieldAttribute>
     {
         protected override bool IsHideDefaultDraw
         {

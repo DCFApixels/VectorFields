@@ -1,13 +1,12 @@
-﻿#if UNITY_5_3_OR_NEWER && UNITY_EDITOR
-using PlasticPipe;
+﻿#if UNITY_EDITOR
 using System.Reflection;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor;
 using UnityEngine;
 
-namespace DCFApixels.DataMath.Unity.Editors
+namespace DCFApixels.VectorFields.Editors
 {
-    internal abstract class VectorFieldDrawerBase<TAttribute> : PropertyDrawer
+    public abstract class VectorFieldDrawerBase<TAttribute> : PropertyDrawer
     {
         private bool _error = false;
         private int _fieldCount = 0;
