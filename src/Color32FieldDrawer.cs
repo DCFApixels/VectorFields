@@ -1,12 +1,11 @@
 ﻿#if UNITY_5_3_OR_NEWER && UNITY_EDITOR
-using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
 namespace DCFApixels.DataMath.Unity.Editors
 {
-    [CustomPropertyDrawer(typeof(ColorFieldAttribute))]
-    internal class ColorFieldDrawer : VectorFieldDrawerBase<ColorFieldAttribute>
+    [CustomPropertyDrawer(typeof(Color32FieldAttribute))]
+    internal class Color32FieldDrawer : VectorFieldDrawerBase<Color32FieldAttribute>
     {
         protected override bool IsHideDefaultDraw
         {
@@ -15,11 +14,6 @@ namespace DCFApixels.DataMath.Unity.Editors
                 if (!IsAttribute) { return true; }
                 return !Attribute.IsShowDefaultDraw;
             }
-        }
-        private ColorUsageAttribute _colorUsageAttribute;
-        protected override void OnInit(FieldInfo fieldInfo, SerializedProperty property)
-        {
-            _colorUsageAttribute = fieldInfo.GetCustomAttribute<ColorUsageAttribute>();
         }
         protected override void DrawLine(Rect position, SerializedProperty property, GUIContent label)
         {
@@ -40,22 +34,15 @@ namespace DCFApixels.DataMath.Unity.Editors
             {
                 if (property.depth <= depth || i >= 4) { break; }
 
-                color[i] = ReadPropFloat(property);
+                color[i] = ReadPropFloat(property) / byte.MaxValue;
 
                 x = false;
                 i++;
             }
 
-            bool isShowAlpha = true;
-            bool IsHDR = false;
-            if(_colorUsageAttribute != null)
-            {
-                isShowAlpha = _colorUsageAttribute.showAlpha;
-                IsHDR = _colorUsageAttribute.hdr;
-            }
             EditorGUI.BeginChangeCheck();
             TmpLabel.text = "";
-            color = EditorGUI.ColorField(position, TmpLabel, color, true, i == 4 && isShowAlpha, IsHDR);
+            color = EditorGUI.ColorField(position, TmpLabel, color, true, i == 4, false);
 
             if (EditorGUI.EndChangeCheck())
             {
@@ -66,7 +53,7 @@ namespace DCFApixels.DataMath.Unity.Editors
                 {
                     if (propertyClone.depth <= depth || i >= 4) { break; }
 
-                    WritePropFloat(propertyClone, color[i]);
+                    WritePropFloat(propertyClone, color[i] * byte.MaxValue);
 
                     x = false;
                     i++;

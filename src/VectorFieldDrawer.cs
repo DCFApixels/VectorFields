@@ -1,13 +1,20 @@
-﻿#if UNITY_EDITOR
+﻿#if UNITY_5_3_OR_NEWER && UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
-namespace DCFApixels.Editors
+namespace DCFApixels.DataMath.Unity.Editors
 {
     [CustomPropertyDrawer(typeof(VectorFieldAttribute))]
     internal class VectorFieldDrawer : VectorFieldDrawerBase<VectorFieldAttribute>
     {
-        protected override bool IsHideDefaultDraw => !Attribute.IsShowDefaultDraw;
+        protected override bool IsHideDefaultDraw
+        {
+            get
+            {
+                if (!IsAttribute) { return true; }
+                return !Attribute.IsShowDefaultDraw;
+            }
+        }
         protected override void DrawLine(Rect position, SerializedProperty property, GUIContent label)
         {
             if (Error)
@@ -19,7 +26,7 @@ namespace DCFApixels.Editors
             EditorGUIUtility.labelWidth = 12f;
             EditorGUI.indentLevel = 0;
 
-            position.width = position.width / Count;
+            position.width = position.width / FieldCount;
             float width = position.width;
             position.xMin += 3f;
 
@@ -31,6 +38,12 @@ namespace DCFApixels.Editors
 
                 label.text = property.displayName;
                 label.tooltip = property.tooltip;
+                if (property.propertyType == SerializedPropertyType.Boolean)
+                {
+                    Color c = property.boolValue ? Color.white : Color.black;
+                    c.a = 0.1f;
+                    EditorGUI.DrawRect(position, c);
+                }
                 EditorGUI.PropertyField(position, property, label);
                 position.x += width;
                 x = false;

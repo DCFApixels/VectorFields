@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace DCFApixels.DataMath.Unity.Editors
 {
-    [CustomPropertyDrawer(typeof(ColorFieldAttribute))]
-    internal class ColorFieldDrawer : VectorFieldDrawerBase<ColorFieldAttribute>
+    [CustomPropertyDrawer(typeof(ColorHSVFieldAttribute))]
+    internal unsafe class ColorHSVFieldDrawer : VectorFieldDrawerBase<ColorHSVFieldAttribute>
     {
         protected override bool IsHideDefaultDraw
         {
@@ -30,9 +30,14 @@ namespace DCFApixels.DataMath.Unity.Editors
             }
             EditorGUIUtility.labelWidth = 0f;
 
+            float* RWBuffer = stackalloc float[4];
+            for (int j = 0; j < 4; j++)
+            {
+                RWBuffer[j] = 0;
+            }
+
             bool x = true;
             int depth = property.depth;
-            Color color = new Color(0, 0, 0, 1);
 
             var propertyClone = property.Copy();
             var i = 0;
@@ -40,15 +45,17 @@ namespace DCFApixels.DataMath.Unity.Editors
             {
                 if (property.depth <= depth || i >= 4) { break; }
 
-                color[i] = ReadPropFloat(property);
+                RWBuffer[i] = ReadPropFloat(property);
 
                 x = false;
                 i++;
             }
+            Color color = Color.HSVToRGB(RWBuffer[0], RWBuffer[1], RWBuffer[2]);
+            color.a = RWBuffer[3];
 
             bool isShowAlpha = true;
             bool IsHDR = false;
-            if(_colorUsageAttribute != null)
+            if (_colorUsageAttribute != null)
             {
                 isShowAlpha = _colorUsageAttribute.showAlpha;
                 IsHDR = _colorUsageAttribute.hdr;
@@ -62,11 +69,15 @@ namespace DCFApixels.DataMath.Unity.Editors
                 x = true;
                 depth = propertyClone.depth;
                 i = 0;
+
+                RWBuffer[3] = color.a;
+                Color.RGBToHSV(color, out RWBuffer[0], out RWBuffer[1], out RWBuffer[2]);
+
                 while (propertyClone.Next(x))
                 {
                     if (propertyClone.depth <= depth || i >= 4) { break; }
 
-                    WritePropFloat(propertyClone, color[i]);
+                    WritePropFloat(propertyClone, RWBuffer[i]);
 
                     x = false;
                     i++;

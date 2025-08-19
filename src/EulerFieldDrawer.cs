@@ -1,16 +1,23 @@
-﻿#if UNITY_EDITOR
+﻿#if UNITY_5_3_OR_NEWER && UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
-namespace DCFApixels.Editors
+namespace DCFApixels.DataMath.Unity.Editors
 {
     [CustomPropertyDrawer(typeof(EulerFieldAttribute))]
     internal class EulerFieldDrawer : VectorFieldDrawerBase<EulerFieldAttribute>
     {
-        protected override bool IsHideDefaultDraw => !Attribute.IsShowDefaultDraw;
+        protected override bool IsHideDefaultDraw
+        {
+            get
+            {
+                if (!IsAttribute) { return true; }
+                return !Attribute.IsShowDefaultDraw;
+            }
+        }
         protected override void DrawLine(Rect position, SerializedProperty property, GUIContent label)
         {
-            if (Error && Count > 4)
+            if (Error && FieldCount > 4)
             {
                 EditorGUI.LabelField(position, "ERROR");
                 return;

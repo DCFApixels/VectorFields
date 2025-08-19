@@ -1,23 +1,44 @@
-﻿#if UNITY_EDITOR
+﻿#if UNITY_5_3_OR_NEWER && UNITY_EDITOR
+using PlasticPipe;
+using System.Reflection;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor;
 using UnityEngine;
 
-namespace DCFApixels.Editors
+namespace DCFApixels.DataMath.Unity.Editors
 {
     internal abstract class VectorFieldDrawerBase<TAttribute> : PropertyDrawer
     {
         private bool _error = false;
-        private int _count = 0;
+        private int _fieldCount = 0;
+
+        private bool _isInit;
+        private bool _isStructFieldType;
+
+        private static GUIContent _tmpLabel;
+        protected static GUIContent TmpLabel
+        {
+            get
+            {
+                if (_tmpLabel == null) { _tmpLabel = new GUIContent(); }
+                return _tmpLabel;
+            }
+        }
+
+
 
         protected float Line => EditorGUIUtility.singleLineHeight;
         protected float Space => EditorGUIUtility.standardVerticalSpacing;
 
         protected bool Error => _error;
-        protected int Count => _count;
+        protected int FieldCount => _fieldCount;
 
         protected abstract bool IsHideDefaultDraw { get; }
 
+        protected bool IsAttribute
+        {
+            get { return attribute != null; }
+        }
         protected TAttribute Attribute
         {
             get
@@ -27,13 +48,27 @@ namespace DCFApixels.Editors
             }
         }
 
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        private void Init(FieldInfo fieldInfo, SerializedProperty property)
         {
+            if (_isInit) { return; }
+            _isStructFieldType = fieldInfo.FieldType.IsValueType;
+            if (_isStructFieldType)
+            {
+                (_error, _fieldCount) = CountFields(property);
+            }
+            OnInit(fieldInfo, property);
+            _isInit = true;
+        }
+        protected virtual void OnInit(FieldInfo fieldInfo, SerializedProperty property) { }
+
+        private (bool error, int fieldCount) CountFields(SerializedProperty property)
+        {
+            (bool error, int fieldCount) result = default;
             var propertyClone = property.Copy();
             bool x = true;
             int depth = propertyClone.depth;
-            _count = 0;
-            _error = false;
+            result.fieldCount = 0;
+            result.error = false;
             while (propertyClone.Next(x))
             {
                 if (propertyClone.depth <= depth) { break; }
@@ -50,7 +85,7 @@ namespace DCFApixels.Editors
                     case SerializedPropertyType.Gradient:
                     case SerializedPropertyType.Quaternion:
                     case SerializedPropertyType.AnimationCurve:
-                        _error |= false;
+                        result.error |= false;
                         break;
 
                     case SerializedPropertyType.Bounds:
@@ -71,18 +106,29 @@ namespace DCFApixels.Editors
                     case SerializedPropertyType.ArraySize:
                     case SerializedPropertyType.Character:
                     default:
-                        _error |= true;
+                        result.error |= true;
                         break;
                 }
-                _count++;
+                result.fieldCount++;
                 x = false;
+            }
+
+            return result;
+        }
+
+        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
+        {
+            Init(fieldInfo, property);
+            if (_isStructFieldType)
+            {
+                (_error, _fieldCount) = CountFields(property);
             }
 
             if (IsHideDefaultDraw || _error)
             {
                 return Line;
             }
-            return property.isExpanded ? _count * (Space + Line) + Line : Line;
+            return property.isExpanded ? _fieldCount * (Space + Line) + Line : Line;
         }
 
         public sealed override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -134,6 +180,7 @@ namespace DCFApixels.Editors
         }
 
         protected abstract void DrawLine(Rect position, SerializedProperty property, GUIContent label);
+
         #region RW Float
         protected float ReadPropFloat(SerializedProperty _property)
         {
